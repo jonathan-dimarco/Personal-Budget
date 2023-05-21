@@ -10,10 +10,9 @@ const pool = new Pool ({
     port: 5432,
 })
 
-const query = (text, params, callback) => {
-     return pool.query(text, params, callback)
-  };
-
-
-module.exports = query;
+module.exports = {
+  query: (text, params, callback) => {
+    return pool.query(text, params, callback)
+  },
+}
     
