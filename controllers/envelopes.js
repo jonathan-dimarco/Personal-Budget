@@ -20,6 +20,9 @@ const getEnvelopesById = (req, res) => {
     if (error) {
       throw error
     }
+    if(id !== results.rows.id) {
+      res.status(404).send("Envelope not found!");
+    }
     res.status(200).json(results.rows)
   })
 }
@@ -46,6 +49,9 @@ const updateEnvelope = (req, res) => {
     if(error) {
       throw error;
     }
+    if(id !== results.rows.id) {
+      res.status(404).send("Envelope not found!");
+    }
     res.status(200).send(`Envelope updated with id: ${id}`);
   })
 }
@@ -58,6 +64,9 @@ const deleteEnvelope = (req, res) => {
   db.query("DELETE FROM envelopes WHERE id = $1", [id], (error, results) => {
     if(error) {
       throw error;
+    }
+    if(id !== results.rows.id) {
+      res.status(404).send("Envelope not found!");
     }
     res.status(200).send(`Envelope with id: ${id} deleted succesfully`);
   })
