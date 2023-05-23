@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
 const envelopesRouter = require("./routes/envelopes");
-const PORT = process.env.PORT || 3001;
 
 app.use(bodyParser.json())
 app.use(
@@ -11,9 +10,14 @@ app.use(
   })
 );
 
-app.use('/envelopes', envelopesRouter);
+app.use('/api/v1/envelopes/', envelopesRouter);
+
+app.get('/', (req, res) => {
+  res.send("Node.js, Express.js, and Postgres API")
+});
 
 
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}`);
