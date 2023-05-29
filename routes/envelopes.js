@@ -1,5 +1,4 @@
 const envelopesRouter = require("express").Router();
-module.exports = envelopesRouter;
 const { getEnvelopes, getEnvelopesById, createEnvelope, updateEnvelope, deleteEnvelope } = require("../controllers/envelopes.js");
 
 envelopesRouter.get("/", getEnvelopes);
@@ -10,3 +9,4 @@ envelopesRouter.delete("/:id", deleteEnvelope);
 
 
 
+module.exports = envelopesRouter;
