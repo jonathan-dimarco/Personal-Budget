@@ -13,7 +13,7 @@ app.use(
   })
 );
 
-app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument)); 
+app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument)); 
 app.use("/api/v1/envelopes/", envelopesRouter);
 app.use("/api/v1/transactions/", transactionsRouter);
 
