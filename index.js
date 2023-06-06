@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./docs/openapi.json');
 const envelopesRouter = require("./routes/envelopes");
 const transactionsRouter = require("./routes/transactions");
 
@@ -11,6 +13,7 @@ app.use(
   })
 );
 
+app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument)); 
 app.use("/api/v1/envelopes/", envelopesRouter);
 app.use("/api/v1/transactions/", transactionsRouter);
 

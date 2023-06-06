@@ -1,0 +1,436 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Personal_Budget",
+    "version": "1.0.0",
+    "description": "Node/Express API to manage a portfolio budget using a budget envelope strategy. Users can create, read, update, and delete envelopes as well as create transactions for each individual envelope. All data is persisted in a database using PostgreSQL."
+  },
+  "paths": {
+    "/envelopes": {
+      "summary": "Get all envelopes data",
+      "description": "This path retrieves all of the envelopes data from the database",
+      "get": {
+        "summary": "Gets all envelopes data",
+        "description": "Retrieves the envelopes data from the database",
+        "operationId": "get_envelopes",
+        "responses": {
+          "200": {
+            "description": "ok response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Envelopes": {
+                    "value": "[\n    {\n        \"id\": 1,\n        \"title\": \"rent\",\n        \"budget\": 500,\n        \"creation_date\": \"2023-05-30T22:00:00.000Z\"\n    },\n    {\n        \"id\": 2,\n        \"title\": \"groceries\",\n        \"budget\": 220,\n        \"creation_date\": \"2023-05-30T22:00:00.000Z\"\n    },\n    {\n        \"id\": 3,\n        \"title\": \"gas\",\n        \"budget\": 200,\n        \"creation_date\": \"2023-05-30T22:00:00.000Z\"\n    },\n    {\n        \"id\": 4,\n        \"title\": \"srvices\",\n        \"budget\": 150,\n        \"creation_date\": \"2023-05-30T22:00:00.000Z\"\n    },\n    {\n        \"id\": 5,\n        \"title\": \"healthcare\",\n        \"budget\": 50,\n        \"creation_date\": \"2023-05-30T22:00:00.000Z\"\n    },\n    {\n        \"id\": 6,\n        \"title\": \"others\",\n        \"budget\": 100,\n        \"creation_date\": \"2023-05-30T22:00:00.000Z\"\n    },\n    {\n        \"id\": 7,\n        \"title\": \"savings\",\n        \"budget\": 250,\n        \"creation_date\": \"2023-05-30T22:00:00.000Z\"\n    }\n]"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Not Found": {
+                    "value": "\"Records Not Found\""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Envelopes"
+        ]
+      },
+      "post": {
+        "summary": "Create a new Envelope",
+        "description": "It adds a new envelope record to the database",
+        "operationId": "add_envelope",
+        "requestBody": {
+          "description": "A new envelope object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Envelopes"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Envelope Created": {
+                    "value": "\"Envelope created successfully with id: 1\""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "New Envelope"
+        ]
+      }
+    },
+    "/envelopes/{id}": {
+      "summary": "Get an envelope by id",
+      "description": "This path retrieves an envelope by its id number",
+      "get": {
+        "summary": "Gets an envelope data",
+        "description": "Gets an envelope data from the database by its id number",
+        "operationId": "get_envelope(id)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the envelope.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Get Envelope": {
+                    "value": "\n    {\n        \"id\": 1,\n        \"title\": \"rent\",\n        \"budget\": 500,\n        \"creation_date\": \"2023-05-30T22:00:00.000Z\"\n    }\n"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Not Found": {
+                    "value": "\"Envelope Not Found!\""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Get Envelope"
+        ]
+      },
+      "put": {
+        "summary": "Updates an envelope data",
+        "description": "Updates an envelope data in the database based on its id",
+        "operationId": "update_envelope",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the envelope.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok Response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Envelope Updated": {
+                    "value": "{\n        \"id\": 5,\n        \"title\": \"healthcare\",\n        \"budget\": 50,\n        \"creation_date\": \"2023-05-30T22:00:00.000Z\"\n    }"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Not Found": {
+                    "value": "\"Envelope Not Found!\""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Update Envelope"
+        ]
+      },
+      "delete": {
+        "summary": "Deletes an envelope",
+        "description": "Deletes an envelope data by its id",
+        "operationId": "delete_envelope",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the envelope.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok Response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Envelope deleted": {
+                    "value": "Envelope with id: 1 deleted successfully"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Not Found": {
+                    "value": "\"Envelope Not Found!\""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Delete Envelope"
+        ]
+      }
+    },
+    "/transactions": {
+      "summary": "Get all transactions data",
+      "description": "This path is used to retrieve all of the transactions data from the database",
+      "get": {
+        "summary": "Get all transactions",
+        "description": "Get all tansactions data from the database",
+        "operationId": "get_transactions",
+        "responses": {
+          "200": {
+            "description": "Ok Response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Transactions": {
+                    "value": "{\n        \"id\": 4,\n        \"from_id\": 5,\n        \"to_id\": 6,\n        \"amount\": 50,\n        \"created_at\": \"2023-06-01T22:00:00.000Z\"\n    }"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Not Found": {
+                    "value": "\"Records Not Found\""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Transactions"
+        ]
+      },
+      "post": {
+        "summary": "Add a new transaction",
+        "description": "Add a new transaction to the database",
+        "operationId": "add_transaction",
+        "requestBody": {
+          "description": "A new envelope object",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Transactions"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Transaction Created": {
+                    "value": "Transaction created succesfully"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Envelope to sustract not found": {
+                    "value": "\"Envelope to sustract not found!\""
+                  },
+                  "Envelope to add Not Found": {
+                    "value": "\"Envelope to add Not Found!\""
+                  },
+                  "You can't transfer money into the same envelope": {
+                    "value": "\"You can't transfer money into the same envelope!\""
+                  },
+                  "insufficient Founds in Envelope": {
+                    "value": "insufficient Founds in Envelope!"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "New Transaction"
+        ]
+      }
+    },
+    "/transactions/{id}": {
+      "summary": "Get a transaction data by its id",
+      "description": "This path retrieves a transaction data based on its id number",
+      "get": {
+        "summary": "Get a single transaction",
+        "description": "Get a single transaction data by its id",
+        "operationId": "get_transaction_by_id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the transaction.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok response",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Get Transaction": {
+                    "value": "{\n        \"id\": 4,\n        \"from_id\": 5,\n        \"to_id\": 6,\n        \"amount\": 50,\n        \"created_at\": \"2023-06-01T22:00:00.000Z\"\n    }"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Transaction Not Found": {
+                    "value": "\"Transaction Not Found\""
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Get Transaction"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a single transaction ",
+        "description": "Deletes an specific transaction data by its id",
+        "operationId": "delete_transaction",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the transaction.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Transaction deleted": {
+                    "value": "Transaction deleted succesfully\""
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Not Found": {
+                    "value": "\"Transaction not found!\""
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Envelopes": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "budget": {
+            "type": "number"
+          }
+        },
+        "xml": {
+          "name": "Envelope"
+        }
+      },
+      "Transactions": {
+        "type": "object",
+        "properties": {
+          "from_id": {
+            "type": "number"
+          },
+          "to_id": {
+            "type": "number"
+          },
+          "amount": {
+            "type": "number"
+          }
+        },
+        "xml": {
+          "name": "Transaction"
+        }
+      }
+    }
+  }
+}
